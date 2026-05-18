@@ -10,7 +10,7 @@ export default function Index() {
         activeOpacity={0.85}
         onPress={() => router.push('/onboarding')}
       >
-        <Text className='h4 text-white'>View Onboarding</Text>
+        <Text className='h4 text-white'>Show Onboarding</Text>
       </TouchableOpacity>
     </View>
   )
