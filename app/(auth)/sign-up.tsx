@@ -1,5 +1,6 @@
-import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router'
+import { useSignUp } from '@clerk/expo'
+import { AntDesign, Ionicons } from '@expo/vector-icons'
+import { type Href, router } from 'expo-router'
 import { useState } from 'react'
 import {
   Image,
@@ -17,16 +18,58 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import SocialButton from '@/components/SocialButton'
 import VerificationModal from '@/components/VerificationModal'
 import { images } from '@/constants/images'
+import { socialProviders, useSSOFlow } from '@/hooks/useSSOFlow'
 
 export default function SignUp() {
+  const { signUp, fetchStatus } = useSignUp()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showVerification, setShowVerification] = useState(false)
+  const [signUpError, setSignUpError] = useState<string | null>(null)
+  const [verifyError, setVerifyError] = useState<string | null>(null)
+  const { handleSSO } = useSSOFlow(setSignUpError)
 
-  const handleSignUp = () => {
-    if (!email) return
+  const handleSignUp = async () => {
+    if (fetchStatus === 'fetching' || !email || !password) return
+    setSignUpError(null)
+    const { error: pwError } = await signUp.password({
+      emailAddress: email,
+      password,
+    })
+    if (pwError) {
+      setSignUpError(
+        pwError.longMessage ?? pwError.message ?? 'Failed to sign up',
+      )
+      return
+    }
+    const { error: sendError } = await signUp.verifications.sendEmailCode()
+    if (sendError) {
+      setSignUpError(
+        sendError.longMessage ?? sendError.message ?? 'Failed to send code',
+      )
+      return
+    }
     setShowVerification(true)
+  }
+
+  const handleVerify = async (code: string) => {
+    setVerifyError(null)
+    const { error } = await signUp.verifications.verifyEmailCode({ code })
+    if (error) {
+      setVerifyError(error.longMessage ?? error.message ?? 'Invalid code')
+      return
+    }
+    if (signUp.status === 'complete') {
+      setShowVerification(false)
+      await signUp.finalize({
+        navigate: ({ session, decorateUrl }) => {
+          if (session?.currentTask) return
+          const url = decorateUrl('/')
+          router.replace(url as Href)
+        },
+      })
+    }
   }
 
   return (
@@ -122,6 +165,20 @@ export default function SignUp() {
             </Text>
           </TouchableOpacity>
 
+          {/* Sign-up error */}
+          {signUpError ? (
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                fontSize: 13,
+                color: '#EF4444',
+                textAlign: 'center',
+              }}
+            >
+              {signUpError}
+            </Text>
+          ) : null}
+
           {/* Divider */}
           <View className='flex-row items-center my-5 gap-2.5'>
             <View className='flex-1 h-px bg-border' />
@@ -132,21 +189,14 @@ export default function SignUp() {
           </View>
 
           {/* Social buttons */}
-          <SocialButton
-            icon={<AntDesign name='google' size={22} color='#EA4335' />}
-            label='Continue with Google'
-            onPress={() => {}}
-          />
-          <SocialButton
-            icon={<FontAwesome name='facebook' size={22} color='#1877F2' />}
-            label='Continue with Facebook'
-            onPress={() => {}}
-          />
-          <SocialButton
-            icon={<AntDesign name='apple' size={22} color='#000000' />}
-            label='Continue with Apple'
-            onPress={() => {}}
-          />
+          {socialProviders.map(({ strategy, label, icon }) => (
+            <SocialButton
+              key={strategy}
+              icon={icon}
+              label={label}
+              onPress={() => handleSSO(strategy)}
+            />
+          ))}
 
           {/* Sign in link */}
           <View className='flex-row justify-center items-center mt-4'>
@@ -169,11 +219,9 @@ export default function SignUp() {
         visible={showVerification}
         email={email}
         onClose={() => setShowVerification(false)}
-        onVerified={() => {
-          setShowVerification(false)
-          router.replace('/')
-        }}
+        onVerify={handleVerify}
         onResend={handleSignUp}
+        error={verifyError}
       />
     </SafeAreaView>
   )

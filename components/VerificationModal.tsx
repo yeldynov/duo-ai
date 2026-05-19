@@ -16,8 +16,9 @@ interface VerificationModalProps {
   visible: boolean
   email: string
   onClose: () => void
-  onVerified: () => void
+  onVerify: (code: string) => Promise<void>
   onResend?: () => void
+  error?: string | null
 }
 
 const CODE_LENGTH = 6
@@ -26,8 +27,9 @@ export default function VerificationModal({
   visible,
   email,
   onClose,
-  onVerified,
+  onVerify,
   onResend,
+  error,
 }: VerificationModalProps) {
   const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(''))
   const inputRef = useRef<TextInput>(null)
@@ -52,7 +54,7 @@ export default function VerificationModal({
 
     if (digits.length === CODE_LENGTH) {
       Keyboard.dismiss()
-      setTimeout(() => onVerified(), 200)
+      setTimeout(() => onVerify(digits), 200)
     }
   }
 
@@ -121,6 +123,9 @@ export default function VerificationModal({
             style={styles.hiddenInput}
             caretHidden
           />
+
+          {/* Error message */}
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           {/* Resend */}
           <View style={styles.resendRow}>
@@ -239,5 +244,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 14,
     color: '#6C4EF5',
+  },
+  errorText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 13,
+    color: '#EF4444',
+    textAlign: 'center',
+    marginBottom: 8,
   },
 })
