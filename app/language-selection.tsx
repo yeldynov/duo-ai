@@ -1,5 +1,6 @@
 import { images } from '@/constants/images'
 import { languages } from '@/data/languages'
+import { useLanguageStore } from '@/store/useLanguageStore'
 import type { Language } from '@/types/learning'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
@@ -19,6 +20,7 @@ export default function LanguageSelection() {
   const router = useRouter()
   const [selected, setSelected] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const setSelectedLanguage = useLanguageStore((s) => s.setSelectedLanguage)
 
   const filtered = languages.filter((lang) =>
     lang.name.toLowerCase().includes(search.toLowerCase()),
@@ -26,8 +28,8 @@ export default function LanguageSelection() {
 
   function handleConfirm() {
     if (!selected) return
-    // TODO: persist to Zustand store in a future step
-    router.back()
+    setSelectedLanguage(selected)
+    router.replace('/')
   }
 
   return (
