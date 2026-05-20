@@ -44,6 +44,10 @@ const TAB_CONFIG: Record<
   profile: { label: 'Profile', icon: 'person', iconOutline: 'person-outline' },
 }
 
+function isTabRouteName(name: string): name is TabRouteName {
+  return name in TAB_CONFIG
+}
+
 export function CustomTabBar({ state, navigation }: BottomTabBarProps) {
   const { width } = useWindowDimensions()
   const { bottom } = useSafeAreaInsets()
@@ -77,9 +81,11 @@ export function CustomTabBar({ state, navigation }: BottomTabBarProps) {
         {/* Tab buttons */}
         {state.routes.map((route, index) => {
           const isActive = state.index === index
-          const config = TAB_CONFIG[route.name as TabRouteName]
-
-          if (!config) return null
+          if (!isTabRouteName(route.name)) {
+            console.warn(`Unknown tab route: ${route.name}`)
+            return null
+          }
+          const config = TAB_CONFIG[route.name]
 
           const onPress = () => {
             const event = navigation.emit({

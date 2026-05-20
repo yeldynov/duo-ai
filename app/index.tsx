@@ -7,8 +7,9 @@ import { ActivityIndicator, View } from 'react-native'
 export default function Index() {
   const { isSignedIn, isLoaded } = useAuth()
   const selectedLanguageId = useLanguageStore((s) => s.selectedLanguageId)
+  const languageStoreHydrated = useLanguageStore((s) => s._hasHydrated)
 
-  if (!isLoaded) {
+  if (!isLoaded || !languageStoreHydrated) {
     return (
       <View className='flex-1 justify-center items-center'>
         <ActivityIndicator size='large' color='#5B4CCC' />

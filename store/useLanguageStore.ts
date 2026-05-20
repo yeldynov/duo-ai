@@ -10,20 +10,27 @@ const secureStorage = {
 
 type LanguageStore = {
   selectedLanguageId: string | null
+  _hasHydrated: boolean
   setSelectedLanguage: (id: string) => void
   clearSelectedLanguage: () => void
+  setHasHydrated: (hasHydrated: boolean) => void
 }
 
 export const useLanguageStore = create<LanguageStore>()(
   persist(
     (set) => ({
       selectedLanguageId: null,
+      _hasHydrated: false,
       setSelectedLanguage: (id) => set({ selectedLanguageId: id }),
       clearSelectedLanguage: () => set({ selectedLanguageId: null }),
+      setHasHydrated: (hasHydrated) => set({ _hasHydrated: hasHydrated }),
     }),
     {
       name: 'language-storage',
       storage: createJSONStorage(() => secureStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true)
+      },
     },
   ),
 )

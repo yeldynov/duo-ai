@@ -21,11 +21,11 @@ export function PushTokenRegistrar() {
 
       const token = (await Notifications.getExpoPushTokenAsync()).data
 
-      await user.update({
-        unsafeMetadata: {
-          ...user.unsafeMetadata,
-          expoPushToken: token,
-        },
+      // Send to a backend endpoint — never write metadata directly from the client
+      await fetch('/api/push-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
       })
     }
 
@@ -36,7 +36,33 @@ export function PushTokenRegistrar() {
 }
 ```
 
-> Use `unsafeMetadata` for client-writable data. Use `publicMetadata` (server-only write) for verified data.
+> Validate the token format on the server before persisting. Use the Clerk Backend SDK to write `publicMetadata` so the client cannot spoof the stored value.
+
+## Backend Token Handler (Server)
+
+```typescript
+// app/api/push-token+api.ts (Expo Router API route)
+import { clerkClient } from '@clerk/nextjs/server'
+
+export async function POST(request: Request) {
+  // Extract userId from Clerk session via your auth middleware
+  const userId = request.headers.get('x-clerk-user-id') ?? ''
+  if (!userId) return new Response('Unauthorized', { status: 401 })
+
+  const { token } = (await request.json()) as { token: string }
+
+  if (!token || !/^ExponentPushToken\[.+\]$/.test(token)) {
+    return new Response('Invalid push token', { status: 400 })
+  }
+
+  const client = await clerkClient()
+  await client.users.updateUser(userId, {
+    publicMetadata: { expoPushToken: token },
+  })
+
+  return new Response('OK', { status: 200 })
+}
+```
 
 ## Send Notification to User (Server)
 
@@ -46,7 +72,7 @@ import { clerkClient } from '@clerk/nextjs/server'
 async function sendNotification(userId: string, title: string, body: string) {
   const client = await clerkClient()
   const user = await client.users.getUser(userId)
-  const token = user.unsafeMetadata?.expoPushToken as string | undefined
+  const token = user.publicMetadata?.expoPushToken as string | undefined
 
   if (!token) return
 

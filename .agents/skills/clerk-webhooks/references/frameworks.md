@@ -59,7 +59,7 @@ export const POST: APIRoute = async ({ request }) => {
 }
 ```
 
-Astro requires explicit `signingSecret` since `import.meta.env` is not auto-read.
+`@clerk/astro/webhooks` reads `CLERK_WEBHOOK_SIGNING_SECRET` from the environment automatically; passing `signingSecret` (as shown above with `import.meta.env.CLERK_WEBHOOK_SIGNING_SECRET`) is optional.
 
 ## Fastify
 
@@ -195,22 +195,26 @@ export const ServerRoute = createServerFileRoute().methods({
 })
 ```
 
-When tunneling via ngrok in dev, allow the host in `app.config.ts`:
+When tunneling via ngrok in dev, allow the host in `vite.config.ts` (keep `app.config.ts` for Start/Nitro runtime config only):
 
 ```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
+import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   server: {
     allowedHosts: ['fawn-two-nominally.ngrok-free.app'],
   },
+  plugins: [tanstackStart(), react()],
 })
 ```
 
 ## Common Patterns Across Frameworks
 
 - All `verifyWebhook` adapters return the same `WebhookEvent` discriminated union, so handler logic (`if (evt.type === ...)`) is identical.
-- All adapters read `CLERK_WEBHOOK_SIGNING_SECRET` automatically except Astro (pass `signingSecret` option).
+- All adapters read `CLERK_WEBHOOK_SIGNING_SECRET` automatically, including Astro; passing `signingSecret` explicitly is optional.
 - All adapters require a public webhook route, exclude `/api/webhooks(.*)` from middleware protection.
 - Vite-based frameworks (Nuxt, React Router, TanStack Start) need `allowedHosts` configured when tunneling localhost via ngrok in development.
 - Express specifically needs `express.raw({ type: 'application/json' })` for the webhook route, raw body bytes are required for signature verification.

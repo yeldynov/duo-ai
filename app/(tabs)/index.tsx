@@ -57,7 +57,8 @@ export default function HomeScreen() {
       iconBg: '#6C4EF5',
       title: 'Lesson',
       subtitle: currentLesson?.title ?? 'Start learning',
-      completed: true,
+      // TODO: derive from progress store when lesson completion tracking is added
+      completed: false,
     },
     {
       id: '2',
@@ -164,7 +165,7 @@ export default function HomeScreen() {
                   className='body-sm mb-4'
                   style={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  A1 • Unit {currentUnit?.order ?? 1}
+                  {currentUnit ? `A1 • Unit ${currentUnit.order}` : 'No units available'}
                 </Text>
               </View>
               <TouchableOpacity
@@ -173,7 +174,7 @@ export default function HomeScreen() {
                   posthog.capture('continue_learning_tapped', {
                     language_id: currentLanguage.id,
                     language_name: currentLanguage.name,
-                    unit: currentUnit?.order ?? 1,
+                    unit: currentUnit?.order ?? null,
                   })
                   router.push('/(tabs)/learn')
                 }}

@@ -33,12 +33,12 @@ export default function SignIn() {
   const handleSignIn = async () => {
     if (fetchStatus === 'fetching' || !email) return
     setSignInError(null)
-    posthog.capture('sign_in_submitted', { email })
+    posthog.capture('sign_in_submitted')
     const { error } = await signIn.emailCode.sendCode({ emailAddress: email })
     if (error) {
       const message = error.longMessage ?? error.message ?? 'Failed to send code'
       setSignInError(message)
-      posthog.capture('sign_in_error', { email, error: message })
+      posthog.capture('sign_in_error', { error: message })
       return
     }
     setShowVerification(true)
