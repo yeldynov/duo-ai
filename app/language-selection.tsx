@@ -4,6 +4,7 @@ import { useLanguageStore } from '@/store/useLanguageStore'
 import type { Language } from '@/types/learning'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import { useState } from 'react'
 import {
   Image,
@@ -18,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function LanguageSelection() {
   const router = useRouter()
+  const posthog = usePostHog()
   const [selected, setSelected] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const setSelectedLanguage = useLanguageStore((s) => s.setSelectedLanguage)
@@ -28,6 +30,11 @@ export default function LanguageSelection() {
 
   function handleConfirm() {
     if (!selected) return
+    const language = languages.find((l) => l.id === selected)
+    posthog.capture('language_confirmed', {
+      language_id: selected,
+      language_name: language?.name ?? null,
+    })
     setSelectedLanguage(selected)
     router.replace('/')
   }
@@ -121,6 +128,8 @@ function LanguageRow({
   isLast: boolean
   onPress: () => void
 }) {
+  const [flagError, setFlagError] = useState(false)
+
   return (
     <>
       <TouchableOpacity
@@ -129,7 +138,17 @@ function LanguageRow({
         className={`flex-row items-center py-3.5 px-4 rounded-2xl${isSelected ? ' bg-[#EDE9FF] border-[1.5px] border-lingua-purple' : ''}`}
       >
         {/* Flag */}
-        <Image source={{ uri: language.flag }} className='w-11 h-11 rounded-full bg-gray-100' />
+        {flagError ? (
+          <View className='w-11 h-11 rounded-full bg-gray-200 items-center justify-center'>
+            <Ionicons name='language' size={20} color='#6B7280' />
+          </View>
+        ) : (
+          <Image
+            source={{ uri: language.flag }}
+            className='w-11 h-11 rounded-full bg-gray-100'
+            onError={() => setFlagError(true)}
+          />
+        )}
 
         {/* Text */}
         <View className='flex-1 ml-3'>

@@ -1,6 +1,7 @@
 import { useSignUp } from '@clerk/expo'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { type Href, router } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import { useState } from 'react'
 import {
   Image,
@@ -22,35 +23,50 @@ import { socialProviders, useSSOFlow } from '@/hooks/useSSOFlow'
 
 export default function SignUp() {
   const { signUp, fetchStatus } = useSignUp()
+  const posthog = usePostHog()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showVerification, setShowVerification] = useState(false)
   const [signUpError, setSignUpError] = useState<string | null>(null)
   const [verifyError, setVerifyError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
   const { handleSSO } = useSSOFlow(setSignUpError)
 
   const handleSignUp = async () => {
-    if (fetchStatus === 'fetching' || !email || !password) return
+    if (fetchStatus === 'fetching' || !email || !password || loading) return
     setSignUpError(null)
-    const { error: pwError } = await signUp.password({
-      emailAddress: email,
-      password,
-    })
-    if (pwError) {
-      setSignUpError(
-        pwError.longMessage ?? pwError.message ?? 'Failed to sign up',
-      )
-      return
+    setLoading(true)
+    posthog.capture('sign_up_submitted')
+    try {
+      const { error: pwError } = await signUp.password({
+        emailAddress: email,
+        password,
+      })
+      if (pwError) {
+        const message = pwError.longMessage ?? pwError.message ?? 'Failed to sign up'
+        setSignUpError(message)
+        posthog.capture('sign_up_error', { error: message })
+        return
+      }
+      const { error: sendError } = await signUp.verifications.sendEmailCode()
+      if (sendError) {
+        const message = sendError.longMessage ?? sendError.message ?? 'Failed to send code'
+        setSignUpError(message)
+        posthog.capture('sign_up_error', { error: message })
+        return
+      }
+      setShowVerification(true)
+    } finally {
+      setLoading(false)
     }
-    const { error: sendError } = await signUp.verifications.sendEmailCode()
-    if (sendError) {
-      setSignUpError(
-        sendError.longMessage ?? sendError.message ?? 'Failed to send code',
-      )
-      return
+  }
+
+  const resendCode = async () => {
+    const { error } = await signUp.verifications.sendEmailCode()
+    if (error) {
+      setSignUpError(error.longMessage ?? error.message ?? 'Failed to resend code')
     }
-    setShowVerification(true)
   }
 
   const handleVerify = async (code: string) => {
@@ -61,6 +77,11 @@ export default function SignUp() {
       return
     }
     if (signUp.status === 'complete') {
+      posthog.identify(email, {
+        $set: { email },
+        $set_once: { sign_up_date: new Date().toISOString() },
+      })
+      posthog.capture('sign_up_completed', { email })
       setShowVerification(false)
       await signUp.finalize({
         navigate: ({ session, decorateUrl }) => {
@@ -158,10 +179,12 @@ export default function SignUp() {
           <TouchableOpacity
             className='bg-lingua-purple rounded-[20px] py-4.5 items-center mt-5'
             onPress={handleSignUp}
+            disabled={loading}
             activeOpacity={0.85}
+            style={loading ? { opacity: 0.7 } : undefined}
           >
             <Text className='font-poppins-semibold text-base text-white'>
-              Sign Up
+              {loading ? 'Signing up…' : 'Sign Up'}
             </Text>
           </TouchableOpacity>
 
@@ -220,7 +243,7 @@ export default function SignUp() {
         email={email}
         onClose={() => setShowVerification(false)}
         onVerify={handleVerify}
-        onResend={handleSignUp}
+        onResend={resendCode}
         error={verifyError}
       />
     </SafeAreaView>

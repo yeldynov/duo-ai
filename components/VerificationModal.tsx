@@ -54,7 +54,15 @@ export default function VerificationModal({
 
     if (digits.length === CODE_LENGTH) {
       Keyboard.dismiss()
-      setTimeout(() => onVerify(digits), 200)
+      setTimeout(() => {
+        void (async () => {
+          try {
+            await onVerify(digits)
+          } catch (err) {
+            console.error('Verification error:', err)
+          }
+        })()
+      }, 200)
     }
   }
 

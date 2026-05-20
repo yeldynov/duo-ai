@@ -7,6 +7,7 @@ import { useProgressStore } from '@/store/useProgressStore'
 import { useUser } from '@clerk/expo'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import {
   Image,
   ScrollView,
@@ -32,6 +33,7 @@ const GREETINGS: Record<string, string> = {
 
 export default function HomeScreen() {
   const router = useRouter()
+  const posthog = usePostHog()
   const { user } = useUser()
   const { selectedLanguageId } = useLanguageStore()
   const { xp, xpGoal, streak } = useProgressStore()
@@ -55,7 +57,8 @@ export default function HomeScreen() {
       iconBg: '#6C4EF5',
       title: 'Lesson',
       subtitle: currentLesson?.title ?? 'Start learning',
-      completed: true,
+      // TODO: derive from progress store when lesson completion tracking is added
+      completed: false,
     },
     {
       id: '2',
@@ -162,12 +165,19 @@ export default function HomeScreen() {
                   className='body-sm mb-4'
                   style={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  A1 • Unit {currentUnit?.order ?? 1}
+                  {currentUnit ? `A1 • Unit ${currentUnit.order}` : 'No units available'}
                 </Text>
               </View>
               <TouchableOpacity
                 className='rounded-full px-6 py-2.5 self-start bg-white'
-                onPress={() => router.push('/(tabs)/learn')}
+                onPress={() => {
+                  posthog.capture('continue_learning_tapped', {
+                    language_id: currentLanguage.id,
+                    language_name: currentLanguage.name,
+                    unit: currentUnit?.order ?? null,
+                  })
+                  router.push('/(tabs)/learn')
+                }}
               >
                 <Text className='font-poppins-semibold text-[14px] text-lingua-deep-purple'>
                   Continue
