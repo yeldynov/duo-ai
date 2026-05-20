@@ -85,7 +85,7 @@ export default function LanguageSelection() {
         <View className='items-center mt-6'>
           <Image
             source={images.earth}
-            style={styles.earthImage}
+            className='w-full h-45'
             resizeMode='contain'
           />
         </View>
@@ -97,10 +97,7 @@ export default function LanguageSelection() {
           activeOpacity={0.85}
           onPress={handleConfirm}
           disabled={!selected}
-          style={[
-            styles.confirmButton,
-            !selected && styles.confirmButtonDisabled,
-          ]}
+          className={`bg-lingua-purple rounded-2xl py-4${!selected ? ' opacity-40' : ''}`}
         >
           <Text className='h4 text-white text-center'>Confirm language</Text>
         </TouchableOpacity>
@@ -127,10 +124,10 @@ function LanguageRow({
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.7}
-        style={[styles.row, isSelected && styles.rowSelected]}
+        className={`flex-row items-center py-3.5 px-4 rounded-2xl${isSelected ? ' bg-[#EDE9FF] border-[1.5px] border-lingua-purple' : ''}`}
       >
         {/* Flag */}
-        <Image source={{ uri: language.flag }} style={styles.flag} />
+        <Image source={{ uri: language.flag }} className='w-11 h-11 rounded-full bg-gray-100' />
 
         {/* Text */}
         <View className='flex-1 ml-3'>
@@ -144,7 +141,7 @@ function LanguageRow({
 
         {/* Indicator */}
         {isSelected ? (
-          <View style={styles.checkCircle}>
+          <View className='w-7 h-7 rounded-full bg-lingua-purple items-center justify-center'>
             <Ionicons name='checkmark' size={16} color='#fff' />
           </View>
         ) : (
@@ -152,7 +149,7 @@ function LanguageRow({
         )}
       </TouchableOpacity>
 
-      {!isLast && !isSelected && <View style={styles.divider} />}
+      {!isLast && !isSelected && <View className='h-px bg-border mx-4' />}
     </>
   )
 }
@@ -169,48 +166,5 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 16,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-  },
-  rowSelected: {
-    backgroundColor: '#EDE9FF',
-    borderWidth: 1.5,
-    borderColor: '#6C4EF5',
-  },
-  flag: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#F3F4F6',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#E5E7EB',
-    marginHorizontal: 16,
-  },
-  checkCircle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#6C4EF5',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  earthImage: {
-    width: '100%',
-    height: 180,
-  },
-  confirmButton: {
-    backgroundColor: '#6C4EF5',
-    borderRadius: 16,
-    paddingVertical: 16,
-  },
-  confirmButtonDisabled: {
-    opacity: 0.4,
   },
 })

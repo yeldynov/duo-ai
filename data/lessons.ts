@@ -299,21 +299,21 @@ export const lessons: Lesson[] = [
       'You are a warm French teacher. Help the student practice: "Je m\'appelle…", "Comment vous appelez-vous?", "Enchanté(e)." Role-play a short introduction dialogue.',
     goals: [
       'State your name in French',
-      'Ask for someone\'s name (formal and informal)',
+      "Ask for someone's name (formal and informal)",
       'Respond to an introduction',
     ],
     vocabulary: [
       {
-        word: 'je m\'appelle',
+        word: "je m'appelle",
         translation: 'my name is',
         pronunciation: 'zhuh mah-PEL',
-        example: 'Je m\'appelle Sophie.',
+        example: "Je m'appelle Sophie.",
       },
       {
         word: 'enchanté(e)',
         translation: 'nice to meet you',
         pronunciation: 'ahn-shahn-TAY',
-        example: 'Enchanté, je m\'appelle Paul.',
+        example: "Enchanté, je m'appelle Paul.",
       },
       {
         word: 'je suis',
@@ -329,7 +329,7 @@ export const lessons: Lesson[] = [
         pronunciation: 'koh-MAHN vooz ah-play-VAY voo',
       },
       {
-        text: 'Comment tu t\'appelles?',
+        text: "Comment tu t'appelles?",
         translation: 'What is your name? (informal)',
         pronunciation: 'koh-MAHN tü tah-PEL',
       },
@@ -364,7 +364,8 @@ export const lessons: Lesson[] = [
     id: 'ja-lesson-1',
     unitId: 'ja-unit-1',
     title: 'はじめまして (Nice to Meet You)',
-    description: 'Learn essential Japanese greetings and how to introduce yourself.',
+    description:
+      'Learn essential Japanese greetings and how to introduce yourself.',
     xpReward: 10,
     aiTeacherPrompt:
       'You are a patient Japanese teacher. Teach the student: こんにちは (konnichiwa), おはようございます (ohayou gozaimasu), こんばんは (konbanwa), and はじめまして (hajimemashite). Explain the concept of polite vs. casual speech briefly.',
@@ -422,7 +423,12 @@ export const lessons: Lesson[] = [
         id: 'ja-l1-a1',
         type: 'vocabulary',
         question: 'What does "こんにちは" mean?',
-        options: ['good morning', 'good night', 'hello / good afternoon', 'goodbye'],
+        options: [
+          'good morning',
+          'good night',
+          'hello / good afternoon',
+          'goodbye',
+        ],
         answer: 'hello / good afternoon',
       },
       {
@@ -447,7 +453,8 @@ export const lessons: Lesson[] = [
     id: 'de-lesson-1',
     unitId: 'de-unit-1',
     title: 'Hallo!',
-    description: 'Learn German greetings, farewells, and a simple self-introduction.',
+    description:
+      'Learn German greetings, farewells, and a simple self-introduction.',
     xpReward: 10,
     aiTeacherPrompt:
       'You are a friendly German teacher. Teach the student: Hallo, Guten Morgen, Guten Abend, Tschüss, Auf Wiedersehen. Practice a short introduction using "Ich heiße…" and "Wie heißt du?".',
@@ -461,7 +468,7 @@ export const lessons: Lesson[] = [
         word: 'Hallo',
         translation: 'hello',
         pronunciation: 'HAH-loh',
-        example: 'Hallo, wie geht\'s?',
+        example: "Hallo, wie geht's?",
       },
       {
         word: 'Guten Morgen',
