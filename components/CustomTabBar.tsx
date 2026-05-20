@@ -65,11 +65,14 @@ export function CustomTabBar({ state, navigation }: BottomTabBarProps) {
   }))
 
   return (
-    <View style={styles.wrapper}>
+    <View className='bg-white border-t border-border' style={styles.shadow}>
       {/* Tab row: fixed height so the circle is always centered correctly */}
-      <View style={styles.tabRow}>
+      <View className='flex-row h-16 items-center relative'>
         {/* Sliding circle */}
-        <Animated.View style={[styles.circle, circleStyle]} />
+        <Animated.View
+          className='absolute w-13 h-13 rounded-full bg-lingua-purple'
+          style={[styles.circle, circleStyle]}
+        />
 
         {/* Tab buttons */}
         {state.routes.map((route, index) => {
@@ -100,17 +103,25 @@ export function CustomTabBar({ state, navigation }: BottomTabBarProps) {
           return (
             <TouchableOpacity
               key={route.key}
+              className='flex-1 items-center justify-center h-16'
               style={styles.tab}
               onPress={onPress}
               onLongPress={onLongPress}
               activeOpacity={0.7}
+              accessibilityRole='tab'
+              accessibilityState={{ selected: isActive }}
+              accessibilityLabel={config.label}
             >
               <Ionicons
                 name={isActive ? config.icon : config.iconOutline}
                 size={22}
                 color={isActive ? '#FFFFFF' : '#6B7280'}
               />
-              {!isActive && <Text style={styles.label}>{config.label}</Text>}
+              {!isActive && (
+                <Text className='text-[11px] mt-0.75 font-poppins-medium text-text-secondary'>
+                  {config.label}
+                </Text>
+              )}
             </TouchableOpacity>
           )
         })}
@@ -123,42 +134,21 @@ export function CustomTabBar({ state, navigation }: BottomTabBarProps) {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
+  // Platform shadow — not expressible via NativeWind (iOS/Android exception)
+  shadow: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
     elevation: 8,
   },
-  tabRow: {
-    flexDirection: 'row',
-    height: TAB_BAR_HEIGHT,
-    alignItems: 'center',
-    position: 'relative',
-  },
+  // Computed from constants — preserved as dynamic per guidelines
   circle: {
-    position: 'absolute',
     top: (TAB_BAR_HEIGHT - CIRCLE_SIZE) / 2,
-    width: CIRCLE_SIZE,
-    height: CIRCLE_SIZE,
-    borderRadius: CIRCLE_SIZE / 2,
-    backgroundColor: '#6C4EF5',
     zIndex: 0,
   },
+  // z-index kept in StyleSheet per exception rules
   tab: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: TAB_BAR_HEIGHT,
     zIndex: 1,
-  },
-  label: {
-    fontSize: 11,
-    marginTop: 3,
-    fontFamily: 'Poppins-Medium',
-    color: '#6B7280',
   },
 })

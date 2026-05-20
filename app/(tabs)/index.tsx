@@ -6,6 +6,7 @@ import { useLanguageStore } from '@/store/useLanguageStore'
 import { useProgressStore } from '@/store/useProgressStore'
 import { useUser } from '@clerk/expo'
 import { Ionicons } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
 import {
   Image,
   ScrollView,
@@ -30,6 +31,7 @@ const GREETINGS: Record<string, string> = {
 }
 
 export default function HomeScreen() {
+  const router = useRouter()
   const { user } = useUser()
   const { selectedLanguageId } = useLanguageStore()
   const { xp, xpGoal, streak } = useProgressStore()
@@ -44,7 +46,7 @@ export default function HomeScreen() {
 
   const greeting = GREETINGS[currentLanguage.id] ?? 'Hello'
   const firstName = user?.firstName ?? 'Learner'
-  const progress = xp / xpGoal
+  const progress = Math.max(0, Math.min(1, xp / Math.max(1, xpGoal)))
 
   const todayPlan = [
     {
@@ -104,13 +106,13 @@ export default function HomeScreen() {
                 {streak}
               </Text>
             </View>
-            <TouchableOpacity>
+            <View>
               <Ionicons
                 name='notifications-outline'
                 size={24}
                 color='#0D132B'
               />
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -163,7 +165,10 @@ export default function HomeScreen() {
                   A1 • Unit {currentUnit?.order ?? 1}
                 </Text>
               </View>
-              <TouchableOpacity className='rounded-full px-6 py-2.5 self-start bg-white'>
+              <TouchableOpacity
+                className='rounded-full px-6 py-2.5 self-start bg-white'
+                onPress={() => router.push('/(tabs)/learn')}
+              >
                 <Text className='font-poppins-semibold text-[14px] text-lingua-deep-purple'>
                   Continue
                 </Text>
@@ -183,7 +188,7 @@ export default function HomeScreen() {
         <View className='px-5 mb-4'>
           <View className='flex-row items-center justify-between mb-1'>
             <Text className='h4 text-text-primary'>{"Today's plan"}</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/(tabs)/learn')}>
               <Text className='font-poppins-semibold text-[14px] text-lingua-purple'>
                 View all
               </Text>
