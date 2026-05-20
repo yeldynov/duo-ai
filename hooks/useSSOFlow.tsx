@@ -2,6 +2,7 @@ import { useSSO } from '@clerk/expo'
 import { AntDesign, FontAwesome } from '@expo/vector-icons'
 import * as Linking from 'expo-linking'
 import { router } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 
 export type SSOStrategy = 'oauth_google' | 'oauth_facebook' | 'oauth_apple'
 
@@ -29,9 +30,11 @@ export const socialProviders: {
 
 export function useSSOFlow(setError: (msg: string | null) => void) {
   const { startSSOFlow } = useSSO()
+  const posthog = usePostHog()
 
   const handleSSO = async (strategy: SSOStrategy) => {
     setError(null)
+    posthog.capture('sso_sign_in_attempted', { strategy })
     try {
       const { createdSessionId, setActive } = await startSSOFlow({
         strategy,
@@ -39,6 +42,7 @@ export function useSSOFlow(setError: (msg: string | null) => void) {
       })
       if (createdSessionId && setActive) {
         await setActive({ session: createdSessionId })
+        posthog.capture('sso_sign_in_completed', { strategy })
         router.replace('/')
       }
     } catch (err) {

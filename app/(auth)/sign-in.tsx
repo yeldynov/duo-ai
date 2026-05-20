@@ -1,6 +1,7 @@
 import { useSignIn } from '@clerk/expo'
 import { AntDesign } from '@expo/vector-icons'
 import { type Href, router } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import { useState } from 'react'
 import {
   Image,
@@ -22,6 +23,7 @@ import { socialProviders, useSSOFlow } from '@/hooks/useSSOFlow'
 
 export default function SignIn() {
   const { signIn, fetchStatus } = useSignIn()
+  const posthog = usePostHog()
   const [email, setEmail] = useState('')
   const [showVerification, setShowVerification] = useState(false)
   const [signInError, setSignInError] = useState<string | null>(null)
@@ -31,11 +33,12 @@ export default function SignIn() {
   const handleSignIn = async () => {
     if (fetchStatus === 'fetching' || !email) return
     setSignInError(null)
+    posthog.capture('sign_in_submitted', { email })
     const { error } = await signIn.emailCode.sendCode({ emailAddress: email })
     if (error) {
-      setSignInError(
-        error.longMessage ?? error.message ?? 'Failed to send code',
-      )
+      const message = error.longMessage ?? error.message ?? 'Failed to send code'
+      setSignInError(message)
+      posthog.capture('sign_in_error', { email, error: message })
       return
     }
     setShowVerification(true)
@@ -49,6 +52,10 @@ export default function SignIn() {
       return
     }
     if (signIn.status === 'complete') {
+      posthog.identify(email, {
+        $set: { email },
+      })
+      posthog.capture('sign_in_completed', { email })
       setShowVerification(false)
       await signIn.finalize({
         navigate: ({ session, decorateUrl }) => {

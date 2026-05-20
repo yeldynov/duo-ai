@@ -1,6 +1,7 @@
 import { useSignUp } from '@clerk/expo'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { type Href, router } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import { useState } from 'react'
 import {
   Image,
@@ -22,6 +23,7 @@ import { socialProviders, useSSOFlow } from '@/hooks/useSSOFlow'
 
 export default function SignUp() {
   const { signUp, fetchStatus } = useSignUp()
+  const posthog = usePostHog()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -33,21 +35,22 @@ export default function SignUp() {
   const handleSignUp = async () => {
     if (fetchStatus === 'fetching' || !email || !password) return
     setSignUpError(null)
+    posthog.capture('sign_up_submitted', { email })
     const { error: pwError } = await signUp.password({
       emailAddress: email,
       password,
     })
     if (pwError) {
-      setSignUpError(
-        pwError.longMessage ?? pwError.message ?? 'Failed to sign up',
-      )
+      const message = pwError.longMessage ?? pwError.message ?? 'Failed to sign up'
+      setSignUpError(message)
+      posthog.capture('sign_up_error', { email, error: message })
       return
     }
     const { error: sendError } = await signUp.verifications.sendEmailCode()
     if (sendError) {
-      setSignUpError(
-        sendError.longMessage ?? sendError.message ?? 'Failed to send code',
-      )
+      const message = sendError.longMessage ?? sendError.message ?? 'Failed to send code'
+      setSignUpError(message)
+      posthog.capture('sign_up_error', { email, error: message })
       return
     }
     setShowVerification(true)
@@ -61,6 +64,11 @@ export default function SignUp() {
       return
     }
     if (signUp.status === 'complete') {
+      posthog.identify(email, {
+        $set: { email },
+        $set_once: { sign_up_date: new Date().toISOString() },
+      })
+      posthog.capture('sign_up_completed', { email })
       setShowVerification(false)
       await signUp.finalize({
         navigate: ({ session, decorateUrl }) => {

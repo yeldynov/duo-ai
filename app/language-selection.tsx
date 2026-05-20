@@ -4,6 +4,7 @@ import { useLanguageStore } from '@/store/useLanguageStore'
 import type { Language } from '@/types/learning'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import { useState } from 'react'
 import {
   Image,
@@ -18,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function LanguageSelection() {
   const router = useRouter()
+  const posthog = usePostHog()
   const [selected, setSelected] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const setSelectedLanguage = useLanguageStore((s) => s.setSelectedLanguage)
@@ -28,6 +30,11 @@ export default function LanguageSelection() {
 
   function handleConfirm() {
     if (!selected) return
+    const language = languages.find((l) => l.id === selected)
+    posthog.capture('language_confirmed', {
+      language_id: selected,
+      language_name: language?.name,
+    })
     setSelectedLanguage(selected)
     router.replace('/')
   }

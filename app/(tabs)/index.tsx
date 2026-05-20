@@ -7,6 +7,7 @@ import { useProgressStore } from '@/store/useProgressStore'
 import { useUser } from '@clerk/expo'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import {
   Image,
   ScrollView,
@@ -32,6 +33,7 @@ const GREETINGS: Record<string, string> = {
 
 export default function HomeScreen() {
   const router = useRouter()
+  const posthog = usePostHog()
   const { user } = useUser()
   const { selectedLanguageId } = useLanguageStore()
   const { xp, xpGoal, streak } = useProgressStore()
@@ -167,7 +169,14 @@ export default function HomeScreen() {
               </View>
               <TouchableOpacity
                 className='rounded-full px-6 py-2.5 self-start bg-white'
-                onPress={() => router.push('/(tabs)/learn')}
+                onPress={() => {
+                  posthog.capture('continue_learning_tapped', {
+                    language_id: currentLanguage.id,
+                    language_name: currentLanguage.name,
+                    unit: currentUnit?.order ?? 1,
+                  })
+                  router.push('/(tabs)/learn')
+                }}
               >
                 <Text className='font-poppins-semibold text-[14px] text-lingua-deep-purple'>
                   Continue

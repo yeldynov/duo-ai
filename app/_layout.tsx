@@ -3,9 +3,12 @@ import '../global.css'
 import { ClerkLoaded, ClerkProvider } from '@clerk/expo'
 import { tokenCache } from '@clerk/expo/token-cache'
 import { useFonts } from 'expo-font'
-import { Stack } from 'expo-router'
+import { Stack, useGlobalSearchParams, usePathname } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import { useEffect } from 'react'
+import { PostHogProvider } from 'posthog-react-native'
+import { useEffect, useRef } from 'react'
+
+import { posthog } from '@/lib/posthog'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -23,11 +26,25 @@ export default function RootLayout() {
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
   })
 
+  const pathname = usePathname()
+  const params = useGlobalSearchParams()
+  const previousPathname = useRef<string | undefined>(undefined)
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync()
     }
   }, [loaded])
+
+  useEffect(() => {
+    if (previousPathname.current !== pathname) {
+      posthog.screen(pathname, {
+        previous_screen: previousPathname.current ?? null,
+        ...params,
+      })
+      previousPathname.current = pathname
+    }
+  }, [pathname, params])
 
   if (!loaded) {
     return null
@@ -36,12 +53,21 @@ export default function RootLayout() {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ClerkLoaded>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: '#FFFFFF' },
+        <PostHogProvider
+          client={posthog}
+          autocapture={{
+            captureScreens: true,
+            captureTouches: true,
+            propsToCapture: ['testID'],
           }}
-        />
+        >
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: '#FFFFFF' },
+            }}
+          />
+        </PostHogProvider>
       </ClerkLoaded>
     </ClerkProvider>
   )
