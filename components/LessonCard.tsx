@@ -2,7 +2,7 @@ import { images } from '@/constants/images'
 import type { LessonStatus } from '@/store/useLessonProgressStore'
 import type { Lesson } from '@/types/learning'
 import { Ionicons } from '@expo/vector-icons'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 type LessonCardProps = {
   lessonNumber: number
@@ -24,7 +24,7 @@ export function LessonCard({
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.75}
-      style={[styles.card, isInProgress && styles.cardActive]}
+      className={`bg-white rounded-2xl border-[1.5px] mx-4 mb-3 px-4 py-4 flex-row items-center ${isInProgress ? 'border-[#6C4EF5] bg-[#F5F3FF]' : 'border-[#E5E7EB]'}`}
     >
       <View className='flex-1'>
         <Text
@@ -55,7 +55,7 @@ export function LessonCard({
       </View>
 
       {isCompleted && (
-        <View style={styles.checkCircle}>
+        <View className='w-9 h-9 rounded-[18px] bg-[#21C16B] items-center justify-center'>
           <Ionicons name='checkmark' size={18} color='#FFFFFF' />
         </View>
       )}
@@ -63,13 +63,13 @@ export function LessonCard({
       {isInProgress && (
         <Image
           source={images.treasure}
-          style={styles.progressIcon}
+          className='w-12 h-12'
           resizeMode='contain'
         />
       )}
 
       {status === 'available' && (
-        <View style={styles.lockContainer}>
+        <View className='w-9 h-9 items-center justify-center'>
           <Ionicons name='lock-closed-outline' size={22} color='#9CA3AF' />
         </View>
       )}
@@ -77,39 +77,3 @@ export function LessonCard({
   )
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    borderWidth: 1.5,
-    borderColor: '#E5E7EB',
-    marginHorizontal: 16,
-    marginBottom: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  cardActive: {
-    borderColor: '#6C4EF5',
-    backgroundColor: '#F5F3FF',
-  },
-  checkCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#21C16B',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  progressIcon: {
-    width: 48,
-    height: 48,
-  },
-  lockContainer: {
-    width: 36,
-    height: 36,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})

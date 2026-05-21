@@ -9,7 +9,7 @@ export type SSOStrategy = 'oauth_google' | 'oauth_facebook' | 'oauth_apple'
 export const socialProviders: {
   strategy: SSOStrategy
   label: string
-  icon: JSX.Element
+  icon: React.JSX.Element
 }[] = [
   {
     strategy: 'oauth_google',

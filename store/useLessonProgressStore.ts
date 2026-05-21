@@ -1,11 +1,17 @@
-import * as SecureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
-const secureStorage = {
-  getItem: (key: string) => SecureStore.getItemAsync(key),
-  setItem: (key: string, value: string) => SecureStore.setItemAsync(key, value),
-  removeItem: (key: string) => SecureStore.deleteItemAsync(key),
+const asyncStorage = {
+  getItem: async (key: string) => {
+    return await AsyncStorage.getItem(key)
+  },
+  setItem: async (key: string, value: string) => {
+    return await AsyncStorage.setItem(key, value)
+  },
+  removeItem: async (key: string) => {
+    return await AsyncStorage.removeItem(key)
+  },
 }
 
 export type LessonStatus = 'completed' | 'in_progress' | 'available'
@@ -21,8 +27,8 @@ type LessonProgressStore = {
 export const useLessonProgressStore = create<LessonProgressStore>()(
   persist(
     (set, get) => ({
-      completedLessonIds: ['es-lesson-1', 'es-lesson-2'],
-      inProgressLessonId: 'es-lesson-3',
+      completedLessonIds: [],
+      inProgressLessonId: null,
       markLessonComplete: (id) =>
         set((s) => ({
           completedLessonIds: [...new Set([...s.completedLessonIds, id])],
@@ -39,7 +45,7 @@ export const useLessonProgressStore = create<LessonProgressStore>()(
     }),
     {
       name: 'lesson-progress-storage',
-      storage: createJSONStorage(() => secureStorage),
+      storage: createJSONStorage(() => asyncStorage),
     },
   ),
 )

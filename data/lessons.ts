@@ -9,7 +9,7 @@ export const lessons: Lesson[] = [
     title: 'Greetings & Introductions',
     description: 'Learn to greet people and introduce yourself in Spanish.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/es-greetings/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly Spanish teacher. Teach greetings: hola, adiós, buenos días, and how to say "Me llamo…". Keep it simple and encouraging.',
     goals: [
@@ -93,7 +93,7 @@ export const lessons: Lesson[] = [
     title: 'Daily Life',
     description: 'Talk about everyday activities and routines.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/es-daily/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly Spanish teacher. Teach daily routine vocabulary: desayuno, trabajo, casa, dormir. Help the student form simple sentences about their day.',
     goals: [
@@ -169,7 +169,7 @@ export const lessons: Lesson[] = [
     title: 'At the Café',
     description: 'Order food and drinks at a Spanish café.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/es-cafe/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly Spanish teacher. Roleplay a café scene. Teach: un café, por favor, la cuenta, quiero, ¿cuánto cuesta? Practice ordering drinks and snacks.',
     goals: [
@@ -245,7 +245,7 @@ export const lessons: Lesson[] = [
     title: 'Travel & Directions',
     description: 'Ask for and understand directions while travelling.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/es-travel/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly Spanish teacher. Teach direction phrases: a la derecha, a la izquierda, todo recto, ¿dónde está? Role-play asking for directions.',
     goals: [
@@ -328,7 +328,7 @@ export const lessons: Lesson[] = [
     title: 'Shopping',
     description: 'Buy things and talk about prices in Spanish.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/es-shopping/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly Spanish teacher. Teach shopping phrases: ¿cuánto cuesta?, es caro, barato, quiero comprar, talla. Roleplay a shopping scenario.',
     goals: [
@@ -404,7 +404,7 @@ export const lessons: Lesson[] = [
     title: 'Family & Friends',
     description: 'Talk about your family and relationships in Spanish.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/es-family/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly Spanish teacher. Teach family vocabulary: madre, padre, hermano, hermana, amigo. Help the student describe their family.',
     goals: [
@@ -489,7 +489,7 @@ export const lessons: Lesson[] = [
     title: 'Bonjour!',
     description: 'Master French greetings for any time of day.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/fr-greetings/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are an encouraging French teacher. Teach: bonjour, bonsoir, salut, au revoir. Explain formal vs. informal greetings.',
     goals: [
@@ -565,7 +565,7 @@ export const lessons: Lesson[] = [
     title: 'Nice to Meet You',
     description: 'Introduce yourself and ask others their name in French.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/fr-intro/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a warm French teacher. Help the student practice: "Je m\'appelle…", "Enchanté(e)." Role-play a short introduction.',
     goals: [
@@ -635,7 +635,7 @@ export const lessons: Lesson[] = [
     title: 'Au Café',
     description: 'Order food and drinks at a French café.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/fr-cafe/800/420',
+    image: '',
     aiTeacherPrompt:
       "You are a warm French teacher. Teach café vocabulary: un café, s'il vous plaît, l'addition, je voudrais. Roleplay ordering at a Parisian café.",
     goals: [
@@ -711,11 +711,11 @@ export const lessons: Lesson[] = [
     title: 'Numbers & Time',
     description: 'Count in French and tell the time.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/fr-numbers/800/420',
+    image: '',
     aiTeacherPrompt:
-      'You are a warm French teacher. Teach numbers 1–10 and how to tell the time: Il est une heure, Il est midi. Practice counting with simple exercises.',
+      'You are a warm French teacher. Teach numbers 1–3 and how to tell the time: Il est une heure, Il est midi. Practice counting with simple exercises.',
     goals: [
-      'Count from 1 to 10 in French',
+      'Count from 1 to 3 in French',
       'Tell the time in French',
       'Use numbers in sentences',
     ],
@@ -772,7 +772,7 @@ export const lessons: Lesson[] = [
     title: 'Shopping',
     description: 'Buy things and talk about prices in French.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/fr-shopping/800/420',
+    image: '',
     aiTeacherPrompt:
       "You are a warm French teacher. Teach: c'est cher, pas cher, je cherche, la taille, combien. Roleplay a shopping trip.",
     goals: [
@@ -848,7 +848,7 @@ export const lessons: Lesson[] = [
     title: 'Family & Friends',
     description: 'Talk about your family and describe relationships in French.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/fr-family/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a warm French teacher. Teach family vocabulary: mère, père, frère, sœur, ami. Help the student describe their family.',
     goals: [
@@ -927,7 +927,7 @@ export const lessons: Lesson[] = [
     description:
       'Learn essential Japanese greetings and how to introduce yourself.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ja-greetings/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Japanese teacher. Teach: こんにちは, おはようございます, こんばんは, はじめまして. Explain polite vs. casual speech briefly.',
     goals: [
@@ -1008,12 +1008,12 @@ export const lessons: Lesson[] = [
     title: 'Numbers & Time',
     description: 'Count in Japanese and tell the time.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ja-numbers/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Japanese teacher. Teach numbers 1–10 in Japanese: ichi, ni, san, shi, go, roku, nana, hachi, ku, juu. Practice counting exercises.',
     goals: [
       'Count from 1 to 10 in Japanese',
-      'Recognise kanji for numbers',
+      'Recognise hiragana for numbers',
       'Use numbers in sentences',
     ],
     vocabulary: [
@@ -1064,7 +1064,7 @@ export const lessons: Lesson[] = [
     title: 'At the Restaurant',
     description: 'Order food and drinks at a Japanese restaurant.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ja-restaurant/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Japanese teacher. Teach restaurant phrases: ください, おすすめ, おいしい, おかいけい. Roleplay ordering at a Japanese restaurant.',
     goals: [
@@ -1140,7 +1140,7 @@ export const lessons: Lesson[] = [
     title: 'Getting Around',
     description: 'Navigate Japan with essential travel phrases.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ja-travel/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Japanese teacher. Teach transport and direction phrases: えき, みぎ, ひだり, まっすぐ, どこ. Roleplay asking for directions.',
     goals: [
@@ -1216,7 +1216,7 @@ export const lessons: Lesson[] = [
     title: 'Shopping',
     description: 'Shop in Japan and ask about prices.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ja-shopping/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Japanese teacher. Teach shopping phrases: いくらですか, たかい, やすい, かいます. Roleplay a shopping trip.',
     goals: [
@@ -1292,7 +1292,7 @@ export const lessons: Lesson[] = [
     title: 'Family & Friends',
     description: 'Talk about your family in Japanese.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ja-family/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Japanese teacher. Teach family vocabulary: おかあさん, おとうさん, あに, いもうと, ともだち. Help the student describe their family.',
     goals: [
@@ -1370,7 +1370,7 @@ export const lessons: Lesson[] = [
     title: 'Hallo!',
     description: 'Learn German greetings and a simple self-introduction.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/de-greetings/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly German teacher. Teach: Hallo, Guten Morgen, Guten Abend, Tschüss, Auf Wiedersehen. Practice introductions with "Ich heiße…".',
     goals: [
@@ -1446,7 +1446,7 @@ export const lessons: Lesson[] = [
     title: 'Daily Life',
     description: 'Describe your daily routine in German.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/de-daily/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly German teacher. Teach daily routine vocabulary: Frühstück, Arbeit, Haus, schlafen. Help form simple sentences about the day.',
     goals: [
@@ -1522,7 +1522,7 @@ export const lessons: Lesson[] = [
     title: 'Im Café',
     description: 'Order food and drinks at a German café.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/de-cafe/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly German teacher. Teach: einen Kaffee bitte, die Rechnung, ich möchte, was kostet das. Roleplay ordering at a café.',
     goals: [
@@ -1598,7 +1598,7 @@ export const lessons: Lesson[] = [
     title: 'Travel & Directions',
     description: 'Ask for and understand directions in German.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/de-travel/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly German teacher. Teach: rechts, links, geradeaus, wo ist, Entschuldigung. Roleplay asking for directions.',
     goals: [
@@ -1674,7 +1674,7 @@ export const lessons: Lesson[] = [
     title: 'Shopping',
     description: 'Buy things and talk about prices in German.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/de-shopping/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly German teacher. Teach: teuer, billig, ich suche, die Größe, wie viel kostet. Roleplay shopping.',
     goals: [
@@ -1750,7 +1750,7 @@ export const lessons: Lesson[] = [
     title: 'Family & Friends',
     description: 'Talk about your family and relationships in German.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/de-family/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a friendly German teacher. Teach family vocabulary: Mutter, Vater, Bruder, Schwester, Freund. Help the student describe their family.',
     goals: [
@@ -1828,7 +1828,7 @@ export const lessons: Lesson[] = [
     title: 'Greetings & Introductions',
     description: 'Learn essential Korean greetings and self-introduction.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ko-greetings/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Korean teacher. Teach: 안녕하세요, 안녕히 계세요, 반갑습니다, 저는 [name]입니다. Explain formal speech.',
     goals: [
@@ -1904,7 +1904,7 @@ export const lessons: Lesson[] = [
     title: 'Daily Life',
     description: 'Talk about everyday activities in Korean.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ko-daily/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Korean teacher. Teach daily routine vocabulary: 아침, 학교, 집, 자다. Help the student form simple sentences.',
     goals: [
@@ -1980,7 +1980,7 @@ export const lessons: Lesson[] = [
     title: 'At the Café',
     description: 'Order food and drinks at a Korean café.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ko-cafe/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Korean teacher. Teach café phrases: 주세요, 아메리카노, 얼마예요, 주문. Roleplay ordering at a Korean café.',
     goals: [
@@ -2056,7 +2056,7 @@ export const lessons: Lesson[] = [
     title: 'Travel & Directions',
     description: 'Navigate Korea with essential travel phrases.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ko-travel/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Korean teacher. Teach: 오른쪽, 왼쪽, 직진, 어디예요. Roleplay asking for directions.',
     goals: [
@@ -2132,7 +2132,7 @@ export const lessons: Lesson[] = [
     title: 'Shopping',
     description: 'Shop in Korea and ask about prices.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ko-shopping/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Korean teacher. Teach: 비싸다, 싸다, 사다, 사이즈. Roleplay a shopping trip.',
     goals: [
@@ -2208,7 +2208,7 @@ export const lessons: Lesson[] = [
     title: 'Family & Friends',
     description: 'Talk about your family in Korean.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/ko-family/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Korean teacher. Teach: 엄마, 아빠, 오빠, 친구. Help the student describe their family.',
     goals: [
@@ -2286,7 +2286,7 @@ export const lessons: Lesson[] = [
     title: 'Greetings & Introductions',
     description: 'Learn essential Mandarin greetings and introduce yourself.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/zh-greetings/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Mandarin teacher. Teach: 你好, 再见, 谢谢, 我叫[name]. Keep it simple and fun.',
     goals: [
@@ -2362,7 +2362,7 @@ export const lessons: Lesson[] = [
     title: 'Daily Life',
     description: 'Talk about everyday activities in Mandarin.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/zh-daily/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Mandarin teacher. Teach daily routine: 早饭, 上班, 家, 睡觉. Help form simple sentences.',
     goals: [
@@ -2438,7 +2438,7 @@ export const lessons: Lesson[] = [
     title: 'At the Café',
     description: 'Order food and drinks at a Chinese café or teahouse.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/zh-cafe/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Mandarin teacher. Teach: 请给我, 一杯茶, 多少钱, 买单. Roleplay ordering at a café.',
     goals: [
@@ -2514,7 +2514,7 @@ export const lessons: Lesson[] = [
     title: 'Travel & Directions',
     description: 'Navigate China with essential travel phrases.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/zh-travel/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Mandarin teacher. Teach: 右边, 左边, 直走, 在哪里. Roleplay asking for directions.',
     goals: [
@@ -2586,7 +2586,7 @@ export const lessons: Lesson[] = [
     title: 'Shopping',
     description: 'Shop in China and ask about prices.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/zh-shopping/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Mandarin teacher. Teach: 贵, 便宜, 我要买, 尺码. Roleplay a shopping trip.',
     goals: [
@@ -2662,7 +2662,7 @@ export const lessons: Lesson[] = [
     title: 'Family & Friends',
     description: 'Talk about your family in Mandarin.',
     xpReward: 10,
-    image: 'https://picsum.photos/seed/zh-family/800/420',
+    image: '',
     aiTeacherPrompt:
       'You are a patient Mandarin teacher. Teach: 妈妈, 爸爸, 哥哥, 朋友. Help the student describe their family.',
     goals: [
