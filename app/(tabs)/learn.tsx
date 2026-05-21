@@ -38,8 +38,7 @@ export default function LearnScreen() {
 
   const inProgressLesson =
     unitLessons.find((l) => getLessonStatus(l.id) === 'in_progress') ??
-    unitLessons.find((l) => getLessonStatus(l.id) === 'available') ??
-    unitLessons[0]
+    unitLessons.find((l) => getLessonStatus(l.id) === 'available')
 
   const completedCount = unitLessons.filter(
     (l) => getLessonStatus(l.id) === 'completed',
@@ -62,13 +61,17 @@ export default function LearnScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} activeOpacity={0.7}>
+      <View className='flex-row items-center px-4 py-3'>
+        <TouchableOpacity
+          className='w-9 h-9 items-center justify-center'
+          onPress={() => router.back()}
+          activeOpacity={0.7}
+        >
           <Ionicons name='chevron-back' size={24} color='#0D132B' />
         </TouchableOpacity>
 
-        <View style={styles.headerCenter}>
-          <Text style={styles.headerTitle} numberOfLines={1}>
+        <View className='flex-1 mx-2'>
+          <Text className='h3' style={{ color: '#0D132B' }} numberOfLines={1}>
             {inProgressLesson?.title ?? unit.title}
           </Text>
           <Text style={styles.headerSubtitle}>
@@ -76,9 +79,9 @@ export default function LearnScreen() {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.bookmarkButton} activeOpacity={0.7}>
+        <View className='w-9 h-9 items-center justify-center'>
           <Ionicons name='bookmark-outline' size={24} color='#6C4EF5' />
-        </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView
@@ -86,7 +89,7 @@ export default function LearnScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         {/* Hero Image */}
-        <View style={styles.heroContainer}>
+        <View className='mx-4 rounded-[20px] overflow-hidden'>
           {heroImage ? (
             <Image
               source={{ uri: heroImage }}
@@ -101,7 +104,7 @@ export default function LearnScreen() {
         {/* Lessons / Practice Tabs */}
         <View style={styles.tabRow}>
           <TouchableOpacity
-            style={styles.tabItem}
+            className='flex-1 items-center pb-3'
             onPress={() => setActiveTab('lessons')}
             activeOpacity={0.8}
           >
@@ -117,7 +120,7 @@ export default function LearnScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.tabItem}
+            className='flex-1 items-center pb-3'
             onPress={() => setActiveTab('practice')}
             activeOpacity={0.8}
           >
@@ -135,7 +138,7 @@ export default function LearnScreen() {
 
         {/* Lesson List */}
         {activeTab === 'lessons' && (
-          <View style={styles.lessonList}>
+          <View className='pt-1'>
             {unitLessons.map((lesson, index) => (
               <LessonCard
                 key={lesson.id}
@@ -149,7 +152,7 @@ export default function LearnScreen() {
         )}
 
         {activeTab === 'practice' && (
-          <View style={styles.practiceEmpty}>
+          <View className='items-center pt-12 px-8'>
             <Ionicons name='barbell-outline' size={48} color='#D1D5DB' />
             <Text style={styles.practiceEmptyTitle}>Practice coming soon</Text>
             <Text style={styles.practiceEmptySubtitle}>
@@ -167,28 +170,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  backButton: {
-    width: 36,
-    height: 36,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerCenter: {
-    flex: 1,
-    marginHorizontal: 8,
-  },
-  headerTitle: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 20,
-    lineHeight: 26,
-    color: '#0D132B',
-  },
   headerSubtitle: {
     fontFamily: 'Poppins-Regular',
     fontSize: 13,
@@ -196,19 +177,8 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     marginTop: 1,
   },
-  bookmarkButton: {
-    width: 36,
-    height: 36,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   scrollContent: {
     paddingBottom: 32,
-  },
-  heroContainer: {
-    marginHorizontal: 16,
-    borderRadius: 20,
-    overflow: 'hidden',
   },
   heroImage: {
     width: '100%',
@@ -225,12 +195,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E5E7EB',
     marginBottom: 16,
-  },
-  tabItem: {
-    flex: 1,
-    alignItems: 'center',
-    paddingBottom: 12,
-    position: 'relative',
   },
   tabLabel: {
     fontFamily: 'Poppins-Medium',
@@ -249,14 +213,6 @@ const styles = StyleSheet.create({
     height: 2.5,
     backgroundColor: '#6C4EF5',
     borderRadius: 2,
-  },
-  lessonList: {
-    paddingTop: 4,
-  },
-  practiceEmpty: {
-    alignItems: 'center',
-    paddingTop: 48,
-    paddingHorizontal: 32,
   },
   practiceEmptyTitle: {
     fontFamily: 'Poppins-SemiBold',

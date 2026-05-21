@@ -21,8 +21,8 @@ type LessonProgressStore = {
 export const useLessonProgressStore = create<LessonProgressStore>()(
   persist(
     (set, get) => ({
-      completedLessonIds: ['es-lesson-1', 'es-lesson-2'],
-      inProgressLessonId: 'es-lesson-3',
+      completedLessonIds: [],
+      inProgressLessonId: null,
       markLessonComplete: (id) =>
         set((s) => ({
           completedLessonIds: [...new Set([...s.completedLessonIds, id])],

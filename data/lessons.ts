@@ -723,6 +723,13 @@ export const lessons: Lesson[] = [
       { word: 'un', translation: '1', pronunciation: 'uhn' },
       { word: 'deux', translation: '2', pronunciation: 'duh' },
       { word: 'trois', translation: '3', pronunciation: 'trwah' },
+      { word: 'quatre', translation: '4', pronunciation: 'katr' },
+      { word: 'cinq', translation: '5', pronunciation: 'sank' },
+      { word: 'six', translation: '6', pronunciation: 'sees' },
+      { word: 'sept', translation: '7', pronunciation: 'set' },
+      { word: 'huit', translation: '8', pronunciation: 'weet' },
+      { word: 'neuf', translation: '9', pronunciation: 'nuhf' },
+      { word: 'dix', translation: '10', pronunciation: 'dees' },
       {
         word: 'midi',
         translation: 'noon',
@@ -1013,7 +1020,7 @@ export const lessons: Lesson[] = [
       'You are a patient Japanese teacher. Teach numbers 1–10 in Japanese: ichi, ni, san, shi, go, roku, nana, hachi, ku, juu. Practice counting exercises.',
     goals: [
       'Count from 1 to 10 in Japanese',
-      'Recognise kanji for numbers',
+      'Recognise hiragana for numbers',
       'Use numbers in sentences',
     ],
     vocabulary: [

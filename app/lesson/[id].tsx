@@ -4,15 +4,9 @@ import { units } from '@/data/units'
 import { useLessonProgressStore } from '@/store/useLessonProgressStore'
 import { useProgressStore } from '@/store/useProgressStore'
 import { Ionicons } from '@expo/vector-icons'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function LessonScreen() {
@@ -29,7 +23,7 @@ export default function LessonScreen() {
   const lesson = lessons.find((l) => l.id === id)
   const unit = lesson ? units.find((u) => u.id === lesson.unitId) : null
 
-  if (!lesson || !unit) return null
+  if (!lesson || !unit) return <Redirect href='/(tabs)/learn' />
 
   const phrase =
     lesson.phrases.length > 0
@@ -44,33 +38,33 @@ export default function LessonScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
+      <View className='flex-row items-center px-4 py-[10px]'>
         <TouchableOpacity
-          style={styles.backButton}
+          className='w-9 h-9 items-center justify-center'
           onPress={() => router.back()}
           activeOpacity={0.7}
         >
           <Ionicons name='chevron-back' size={24} color='#0D132B' />
         </TouchableOpacity>
 
-        <View style={styles.headerCenter}>
+        <View className='flex-1 ml-1'>
           <Text style={styles.headerTitle}>AI Teacher</Text>
-          <View style={styles.onlineRow}>
+          <View className='flex-row items-center mt-px'>
             <View style={styles.onlineDot} />
             <Text style={styles.onlineText}>Online</Text>
           </View>
         </View>
 
-        <View style={styles.headerActions}>
-          <TouchableOpacity style={styles.iconCircle} activeOpacity={0.7}>
+        <View className='flex-row items-center gap-2'>
+          <View style={styles.iconCircle}>
             <Ionicons name='videocam-outline' size={18} color='#0D132B' />
-          </TouchableOpacity>
+          </View>
           <View style={styles.iconCircle}>
             <Text style={styles.streakText}>{streak}</Text>
           </View>
-          <TouchableOpacity style={styles.iconCircle} activeOpacity={0.7}>
+          <View style={styles.iconCircle}>
             <Ionicons name='notifications-outline' size={18} color='#0D132B' />
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -112,7 +106,7 @@ export default function LessonScreen() {
       </View>
 
       {/* Controls */}
-      <View style={styles.controlsRow}>
+      <View className='flex-row justify-around px-2 pt-5 pb-2'>
         <ControlButton icon='videocam' label='Camera' />
         <ControlButton
           icon={isMicOn ? 'mic' : 'mic-off'}
@@ -156,9 +150,12 @@ function ControlButton({
   variant?: 'danger'
 }) {
   return (
-    <View style={styles.controlItem}>
+    <View className='items-center gap-2'>
       <TouchableOpacity
-        style={[styles.controlBtn, variant === 'danger' && styles.controlBtnDanger]}
+        style={[
+          styles.controlBtn,
+          variant === 'danger' && styles.controlBtnDanger,
+        ]}
         onPress={onPress}
         activeOpacity={0.7}
       >
@@ -183,7 +180,7 @@ function FeedbackItem({
   color: string
 }) {
   return (
-    <View style={styles.feedbackItem}>
+    <View className='flex-1 items-center gap-[5px]'>
       <Text style={styles.feedbackLabel}>{label}</Text>
       <Text style={[styles.feedbackValue, { color }]}>{value}</Text>
     </View>
@@ -195,32 +192,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  backButton: {
-    width: 36,
-    height: 36,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerCenter: {
-    flex: 1,
-    marginLeft: 4,
-  },
   headerTitle: {
     fontFamily: 'Poppins-Bold',
     fontSize: 18,
     lineHeight: 24,
     color: '#0D132B',
-  },
-  onlineRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 1,
   },
   onlineDot: {
     width: 8,
@@ -233,11 +209,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: 12,
     color: '#21C16B',
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
   },
   iconCircle: {
     width: 36,
@@ -320,17 +291,6 @@ const styles = StyleSheet.create({
     borderTopColor: '#FFFFFF',
     marginLeft: 28,
   },
-  controlsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 8,
-    paddingTop: 20,
-    paddingBottom: 8,
-  },
-  controlItem: {
-    alignItems: 'center',
-    gap: 8,
-  },
   controlBtn: {
     width: 64,
     height: 64,
@@ -367,11 +327,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 4,
     elevation: 1,
-  },
-  feedbackItem: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 5,
   },
   feedbackLabel: {
     fontFamily: 'Poppins-Medium',
