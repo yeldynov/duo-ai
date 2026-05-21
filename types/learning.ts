@@ -52,6 +52,7 @@ export type Lesson = {
   title: string
   description: string
   xpReward: number
+  image?: string // hero image URI (remote or local)
   /** Used by the AI teacher / Vision Agent for context */
   aiTeacherPrompt: string
   goals: string[] // what the learner will know after the lesson
