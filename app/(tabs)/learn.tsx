@@ -4,6 +4,7 @@ import { units } from '@/data/units'
 import { useLanguageStore } from '@/store/useLanguageStore'
 import { useLessonProgressStore } from '@/store/useLessonProgressStore'
 import { Ionicons } from '@expo/vector-icons'
+import { Href, useRouter } from 'expo-router'
 import { useState } from 'react'
 import {
   Image,
@@ -19,6 +20,7 @@ type Tab = 'lessons' | 'practice'
 
 export default function LearnScreen() {
   const [activeTab, setActiveTab] = useState<Tab>('lessons')
+  const router = useRouter()
 
   const selectedLanguageId = useLanguageStore((s) => s.selectedLanguageId)
   const getLessonStatus = useLessonProgressStore((s) => s.getLessonStatus)
@@ -54,6 +56,7 @@ export default function LearnScreen() {
     if (status === 'available') {
       setInProgressLesson(lessonId)
     }
+    router.push(`/lesson/${lessonId}` as Href)
   }
 
   return (
